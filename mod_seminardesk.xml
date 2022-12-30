@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0" client="site" method="upgrade">
+	<name>MOD_SEMINARDESK</name>
+	<author>Benno Flory</author>
+	<authorUrl>https://github.com/sternenvogel</authorUrl>
+	<creationDate>Januar 2023</creationDate>
+	<copyright>Copyright (C) 2023 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>1.0.0</version>
+	<description>MOD_SEMINARDESK_DESCRIPTION</description>
+	<files>
+		<filename module="mod_seminardesk">mod_seminardesk.php</filename>
+		<folder>assets</folder>
+		<folder>helpers</folder>
+		<folder>tmpl</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_seminardesk.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_seminardesk.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_seminardesk.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_seminardesk.sys.ini</language>
+	</languages>
+  <media destination="com_seminardesk" folder="media">
+    <folder>js</folder>
+    <folder>css</folder>
+  </media>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field
+					name="view"
+					type="list"
+					label="MOD_SEMINARDESK_FIELD_VIEW_LABEL"
+					description="MOD_SEMINARDESK_FIELD_VIEW_DESC"
+        >
+          <option value="events">MOD_SEMINARDESK_FIELD_VIEW_EVENTS</option>
+          <option value="facilitators">MOD_SEMINARDESK_FIELD_VIEW_FACILITATORS</option>
+        </field>
+				<field
+					name="cat_id"
+					type="text"
+					label="MOD_SEMINARDESK_FIELD_CAT_ID_LABEL"
+					description="MOD_SEMINARDESK_FIELD_CAT_ID_DESC"
+          showon="view:events"
+				/>
+				<field
+					name="show_months"
+					type="checkbox"
+					label="MOD_SEMINARDESK_FIELD_SHOW_MONTHS_LABEL"
+					description="MOD_SEMINARDESK_FIELD_SHOW_MONTHS_DESC"
+          showon="view:events"
+				/>
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>
