@@ -38,33 +38,55 @@ class ModSeminardeskWrapper
   }
   
   /**
+   * Get url for SeminarDesk detail page - see com_seminardesk: SeminardeskHelperData::getDetailsUrl()
+   * 
+   * @param stdClass $event - must contain id, titleSlug and eventId
+   * @param integer $events_page - page listing all events and base for event detail pages
+   * @return string URL to event detail page
+   */
+  public static function getDetailsUrl($event, $events_page)
+  {
+    $itemid = $events_page?"Itemid=" . $events_page . "&":"";
+    return JRoute::_("index.php?" . $itemid . "option=com_seminardesk&view=event&eventId=" . $event->eventId . '&slug=' . $event->titleSlug);
+  }
+  
+  /**
    * 
    * @param array $filter
+   * @param integer $events_page - page listing all events and base for event detail pages
    * @return array - list of event dates, filtered by
    */
-  public static function loadEventDates($filter = []) {
+  public static function loadEventDates($filter = [], $events_page = 0) {
     JLoader::register('SeminardeskHelperData', JPATH_ROOT . '/components/com_seminardesk/helpers/data.php');
-    return SeminardeskHelperData::loadEventDates($filter);
+    $eventDates = SeminardeskHelperData::loadEventDates($filter, $events_page);
+    //-- Map details_url to $events_page from module configuration
+    foreach ($eventDates as $key => &$eventDate) {
+      $eventDate->details_url = self::getDetailsUrl($eventDate, $events_page);
+    }    
+    return $eventDates;
   }
   
 //  public static function showEvents() {
 //    $app 	= JFactory::getApplication();
 ////		$ctrl 		= JControllerLegacy::getInstance('SeminardeskModelEvents');
-//    JLoader::register('SeminardeskModelEvents', JPATH_ROOT . '/components/com_seminardesk/models/events.php');
-//    $ctrl = new SeminardeskModelEvents();
+////    JLoader::register('SeminardeskModelEvents', JPATH_ROOT . '/components/com_seminardesk/models/events.php');
+////    $ctrl = new SeminardeskModelEvents();
+//    JLoader::register('SeminardeskController', JPATH_ROOT . '/components/com_seminardesk/controller.php');
+//    $ctrl = new SeminardeskController();
 ////		$model 	= JModelLegacy::getInstance('Myview', 'SeminardeskModelEvents', array('ignore_request' => true));
 //    JLoader::register('SeminardeskViewEvents', JPATH_ROOT . '/components/com_seminardesk/views/events/view.html.php');
-//    $model = new SeminardeskViewEvents();
+//    $view = new SeminardeskViewEvents();
 //
 //    $document = JFactory::getDocument();
 //		$vFormat = $document->getType();/*html*/
 //
-//		$view = $ctrl->getView('SeminardeskViewEvents', $vFormat);
+////		$view = $ctrl->getView('SeminardeskViewEvents', $vFormat);
 //		
 //		// Push the model into the view (as default).
 //		$view->setModel($model, true);
 //		$view->setLayout("html");
 //		$view->document = $document;
 //		$view->display();
+////    die(json_encode($view));
 //  }
 }

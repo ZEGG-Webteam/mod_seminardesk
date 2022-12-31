@@ -38,10 +38,17 @@
           <option value="facilitators">MOD_SEMINARDESK_FIELD_VIEW_FACILITATORS</option>
         </field>
 				<field
-					name="cat_id"
+					name="events_page"
+					type="menuitem"
+					label="MOD_SEMINARDESK_FIELD_EVENTS_PAGE_LABEL"
+					description="MOD_SEMINARDESK_FIELD_EVENTS_PAGE_DESC"
+          showon="view:events"
+				/>
+				<field
+					name="labels"
 					type="text"
-					label="MOD_SEMINARDESK_FIELD_CAT_ID_LABEL"
-					description="MOD_SEMINARDESK_FIELD_CAT_ID_DESC"
+					label="MOD_SEMINARDESK_FIELD_LABELS_LABEL"
+					description="MOD_SEMINARDESK_FIELD_LABELS_DESC"
           showon="view:events"
 				/>
 				<field
@@ -50,6 +57,20 @@
 					label="MOD_SEMINARDESK_FIELD_SHOW_MONTHS_LABEL"
 					description="MOD_SEMINARDESK_FIELD_SHOW_MONTHS_DESC"
           showon="view:events"
+				/>
+				<field
+					name="limit"
+					type="number"
+					label="MOD_SEMINARDESK_FIELD_LIMIT_LABEL"
+					description="MOD_SEMINARDESK_FIELD_LIMIT_DESC"
+          showon="view:events"
+				/>
+				<field
+					name="facilitators_page"
+					type="menuitem"
+					label="MOD_SEMINARDESK_FIELD_FACILITATORS_PAGE_LABEL"
+					description="MOD_SEMINARDESK_FIELD_FACILITATORS_PAGE_DESC"
+          showon="view:facilitators"
 				/>
 
 			</fieldset>

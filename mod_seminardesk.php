@@ -13,4 +13,4 @@ defined('_JEXEC') or die;
 // Include the seminardesk events functions only once
 JLoader::register('ModSeminardeskWrapper', __DIR__ . '/helpers/wrapper.php');
 
-require JModuleHelper::getLayoutPath('mod_seminardesk', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_seminardesk', $params->get('layout', 'events'));

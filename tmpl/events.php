@@ -18,45 +18,54 @@ $document  = JFactory::getDocument();
 $document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
 $document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
 
-//-- Get key for translations from SeminarDesk (e.g. 'DE', 'EN')
-$langKey = ModSeminardeskWrapper::getCurrentLanguageKey();
-$previousEventMonth = '';
-
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-$eventDates = ModSeminardeskWrapper::loadEventDates(['labels' => $params->get('cat_id')]);
+//-- Load filtered events
+$filter = [
+  'labels' => $params->get('labels'),
+  'limit' => $params->get('limit'),
+];
+$eventDates = ModSeminardeskWrapper::loadEventDates($filter, $params->get('events_page'));
+
+$show_months = $params->get('show_months');
+$previous_event_month = '';
 ?>
 
-<div class="sd-events<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
+<div class="sd-module sd-events<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
   <?php if ($eventDates) : ?>
     <?php foreach($eventDates as $eventDate) : ?>
       <?php
       //-- Month headings?
-      if ($params->get('show_months')) {
-        $currentMonth = (int)date('m', $eventDate->beginDate);
-        if ($currentMonth !== $previousEventMonth) { ?>
+      if ($show_months) {
+        $current_month = (int)date('m', $eventDate->beginDate);
+        if ($current_month !== $previous_event_month) { ?>
           <div class="sd-month-row">
             <h3><?= JText::sprintf( JHTML::_('date', $eventDate->beginDate, 'F Y')) ?></h3>
           </div>
           <?php
-          $previousEventMonth = $currentMonth;
+          $previous_event_month = $current_month;
         }
       }
       ?>
   
-      <div class="sd-event">
+      <div class="sd-event" itemscope="itemscope" itemtype="https://schema.org/Event">
         
-        <a class="registration-available" href="<?= $eventDate->booking_url ?>" target="seminardesk">
+        <a class="registration-available" href="<?= $eventDate->details_url ?>" itemprop="url">
           
           <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
           <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
-            <?= $eventDate->dateFormatted; ?>
+            <time itemprop="startDate" 
+                  datetime="<?= date('c', $eventDate->beginDate) ?>" 
+                  content="<?= date('c', $eventDate->beginDate) ?>">
+              <?= $eventDate->dateFormatted; ?>
+            </time>
+            <time itemprop="endDate" datetime="<?= date('c', $eventDate->endDate) ?>"></time>
           </div>
-          <div class="sd-event-title">
+          <div class="sd-event-title" itemprop="name">
             <?= $eventDate->title; ?>
           </div>
-          <div class="sd-event-facilitators">
-            <?= implode(', ', $eventDate->facilitators); ?>
+          <div class="sd-event-facilitators" itemprop="organizer">
+            <?= $eventDate->facilitatorsList; ?>
           </div>
           <div class="sd-event-registration">
             <?= $eventDate->statusLabel; ?>
