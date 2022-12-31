@@ -30,7 +30,6 @@ $eventDates = ModSeminardeskWrapper::loadEventDates($filter, $params->get('event
 $show_months = $params->get('show_months');
 $previous_event_month = '';
 ?>
-
 <div class="sd-module sd-events<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
   <?php if ($eventDates) : ?>
     <?php foreach($eventDates as $eventDate) : ?>
@@ -47,11 +46,8 @@ $previous_event_month = '';
         }
       }
       ?>
-  
       <div class="sd-event" itemscope="itemscope" itemtype="https://schema.org/Event">
-        
-        <a class="registration-available" href="<?= $eventDate->details_url ?>" itemprop="url">
-          
+        <a class="<?= $eventDate->cssClasses ?>" href="<?= $eventDate->detailsUrl ?>" itemprop="url">
           <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
           <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
             <time itemprop="startDate" 
@@ -62,7 +58,8 @@ $previous_event_month = '';
             <time itemprop="endDate" datetime="<?= date('c', $eventDate->endDate) ?>"></time>
           </div>
           <div class="sd-event-title" itemprop="name">
-            <?= $eventDate->title; ?>
+            <h4><?= $eventDate->title; ?></h4>
+            <?= ($eventDate->showDateTitle)?('<p>' . $eventDate->eventDateTitle . '</p>'):'' ?>
           </div>
           <div class="sd-event-facilitators" itemprop="organizer">
             <?= $eventDate->facilitatorsList; ?>
@@ -70,9 +67,10 @@ $previous_event_month = '';
           <div class="sd-event-registration">
             <?= $eventDate->statusLabel; ?>
           </div>
-          
+          <div class="sd-event-external">
+            <?= ($eventDate->isExternal)?JText::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL"):''; ?>
+          </div>
         </a>
-          
       </div>
     <?php endforeach; ?>
   <?php else : ?>

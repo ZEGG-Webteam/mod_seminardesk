@@ -59,9 +59,9 @@ class ModSeminardeskWrapper
   public static function loadEventDates($filter = [], $events_page = 0) {
     JLoader::register('SeminardeskHelperData', JPATH_ROOT . '/components/com_seminardesk/helpers/data.php');
     $eventDates = SeminardeskHelperData::loadEventDates($filter, $events_page);
-    //-- Map details_url to $events_page from module configuration
+    //-- Map detailsUrl to $events_page from module configuration
     foreach ($eventDates as $key => &$eventDate) {
-      $eventDate->details_url = self::getDetailsUrl($eventDate, $events_page);
+      $eventDate->detailsUrl = self::getDetailsUrl($eventDate, $events_page);
     }    
     return $eventDates;
   }
