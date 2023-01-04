@@ -13,10 +13,19 @@ defined('_JEXEC') or die;
 JHtml::_('jquery.framework');
 JHTML::_('behavior.modal');
 
+//-- Load configs
+$show_months = $params->get('show_months');
+$text_before = $params->get('text_before');
+$text_after = $params->get('text_after');
+$direct_booking = $params->get('direct_booking');
+
 //-- Load CSS / JS
 $document  = JFactory::getDocument();
 $document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
 $document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
+if ($direct_booking) {
+  $document->addStyleSheet('/media/com_seminardesk/css/styles.css');
+}
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
@@ -27,9 +36,13 @@ $filter = [
 ];
 $eventDates = ModSeminardeskWrapper::loadEventDates($filter, $params->get('events_page'));
 
-$show_months = $params->get('show_months');
 $previous_event_month = '';
 ?>
+<?php if ($text_before) : ?>
+<div class="sd-events-text-before">
+  <?= $text_before; ?>
+</div>
+<?php endif; ?>
 <div class="sd-module sd-events<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
   <?php if ($eventDates) : ?>
     <?php foreach($eventDates as $eventDate) : ?>
@@ -45,9 +58,12 @@ $previous_event_month = '';
           $previous_event_month = $current_month;
         }
       }
+      //-- Link to details or booking?
+      $link = ($direct_booking)?$eventDate->bookingUrl:$eventDate->detailsUrl;
+      $classSuffix = ($direct_booking)?" modal":' test';
       ?>
       <div class="sd-event" itemscope="itemscope" itemtype="https://schema.org/Event">
-        <a class="<?= $eventDate->cssClasses ?>" href="<?= $eventDate->detailsUrl ?>" itemprop="url">
+        <a class="<?= $eventDate->cssClasses . $classSuffix ?>" href="<?= $link ?>" itemprop="url" <?= ($direct_booking)?'rel="{handler: \'iframe\'}"':''; ?>>
           <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
           <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
             <time itemprop="startDate" 
@@ -77,3 +93,8 @@ $previous_event_month = '';
     <p><?php echo JText::_("MOD_SEMINARDESK_NO_EVENTS_FOUND");?></p>
   <?php endif; ?>
 </div>
+<?php if ($text_after) : ?>
+<div class="sd-events-text-before">
+  <?= $text_after; ?>
+</div>
+<?php endif; ?>
