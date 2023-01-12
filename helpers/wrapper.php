@@ -38,13 +38,13 @@ class ModSeminardeskWrapper
   }
   
   /**
-   * Get url for SeminarDesk detail page - see com_seminardesk: SeminardeskHelperData::getDetailsUrl()
+   * Get url for SeminarDesk detail page - see com_seminardesk: SeminardeskHelperData::getEventUrl()
    * 
    * @param stdClass $event - must contain id, titleSlug and eventId
    * @param integer $events_page - page listing all events and base for event detail pages
    * @return string URL to event detail page
    */
-  public static function getDetailsUrl($event, $events_page)
+  public static function getEventUrl($event, $events_page)
   {
     $itemid = $events_page?"Itemid=" . $events_page . "&":"";
     return JRoute::_("index.php?" . $itemid . "option=com_seminardesk&view=event&eventId=" . $event->eventId . '&slug=' . $event->titleSlug);
@@ -61,7 +61,7 @@ class ModSeminardeskWrapper
     $eventDates = SeminardeskHelperData::loadEventDates($filter, $events_page);
     //-- Map detailsUrl to $events_page from module configuration
     foreach ($eventDates as $key => &$eventDate) {
-      $eventDate->detailsUrl = self::getDetailsUrl($eventDate, $events_page);
+      $eventDate->detailsUrl = self::getEventUrl($eventDate, $events_page);
     }    
     return $eventDates;
   }
