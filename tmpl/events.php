@@ -30,12 +30,13 @@ if ($direct_booking) {
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
 //-- Load filtered events
-$filter = [
+$filters = [
   'labels' => $params->get('labels'),
   'limit' => $params->get('limit'),
+  'term' => $app->input->get('q')?:$app->input->get('term')?:'',
 ];
-$eventDates = ModSeminardeskWrapper::loadEventDates($filter, $params->get('events_page'));
-
+$eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('events_page'));
+$anyEventMatching = false;
 $previous_event_month = '';
 ?>
 <?php if ($text_before) : ?>
@@ -60,9 +61,16 @@ $previous_event_month = '';
       }
       //-- Link to details or booking?
       $link = ($direct_booking)?$eventDate->bookingUrl:$eventDate->detailsUrl;
-      $classSuffix = ($direct_booking)?" modal":' test';
+      $classSuffix = ($direct_booking)?" modal":"";
+      
+      //-- Matching search term filter?
+//      $matchingFilters = SeminardeskHelperData::matchingFilters($eventDate, $filters);
+      $matchingFilters = !(bool)$filters['term']; // If term is given, hide all events on load and enable by JS (do not filter by php, because this is beeing cached and renders old filter terms!)
+      $anyEventMatching = $anyEventMatching || $matchingFilters;
       ?>
-      <div class="sd-event" itemscope="itemscope" itemtype="https://schema.org/Event">
+      <div class="sd-event<?= (!$matchingFilters)?' hidden':'' ?>" 
+           itemscope="itemscope" itemtype="https://schema.org/Event"
+           data-categories='<?= $eventDate->categoriesList ?>'>
         <a class="<?= $eventDate->cssClasses . $classSuffix ?>" href="<?= $link ?>" itemprop="url" <?= ($direct_booking)?'rel="{handler: \'iframe\'}"':''; ?>>
           <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
           <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
@@ -96,12 +104,11 @@ $previous_event_month = '';
         </a>
       </div>
     <?php endforeach; ?>
-  <?php else : ?>
-    <p><?php echo JText::_("MOD_SEMINARDESK_NO_EVENTS_FOUND");?></p>
   <?php endif; ?>
+  <p class="no-events-found<?= ($eventDates && $anyEventMatching)?' hidden':''; ?>"><?php echo JText::_("MOD_SEMINARDESK_NO_EVENTS_FOUND");?></p>
 </div>
 <?php if ($text_after) : ?>
-<div class="sd-events-text-before">
+<div class="sd-events-text-after">
   <?= $text_after; ?>
 </div>
 <?php endif; ?>

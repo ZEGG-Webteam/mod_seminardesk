@@ -52,13 +52,13 @@ class ModSeminardeskWrapper
   
   /**
    * 
-   * @param array $filter
+   * @param array $filters - containing keys 'date', 'cat', 'org' and/or 'term'
    * @param integer $events_page - page listing all events and base for event detail pages
    * @return array - list of event dates, filtered by
    */
-  public static function loadEventDates($filter = [], $events_page = 0) {
+  public static function loadEventDates($filters = [], $events_page = 0) {
     JLoader::register('SeminardeskHelperData', JPATH_ROOT . '/components/com_seminardesk/helpers/data.php');
-    $eventDates = SeminardeskHelperData::loadEventDates($filter, $events_page);
+    $eventDates = SeminardeskHelperData::loadEventDates($filters, $events_page);
     //-- Map detailsUrl to $events_page from module configuration
     foreach ($eventDates as $key => &$eventDate) {
       $eventDate->detailsUrl = self::getEventUrl($eventDate, $events_page);
