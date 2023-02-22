@@ -36,19 +36,27 @@
         >
           <option value="events">MOD_SEMINARDESK_FIELD_VIEW_EVENTS</option>
           <option value="facilitators">MOD_SEMINARDESK_FIELD_VIEW_FACILITATORS</option>
+          <option value="search">MOD_SEMINARDESK_FIELD_VIEW_SEARCH</option>
         </field>
         <field
           name="events_page"
           type="menuitem"
           label="MOD_SEMINARDESK_FIELD_EVENTS_PAGE_LABEL"
           description="MOD_SEMINARDESK_FIELD_EVENTS_PAGE_DESC"
-          showon="view:events"
+          showon="view:events[OR]view:search"
         />
         <field
           name="labels"
           type="text"
           label="MOD_SEMINARDESK_FIELD_LABELS_LABEL"
           description="MOD_SEMINARDESK_FIELD_LABELS_DESC"
+          showon="view:events"
+        />
+        <field
+          name="term"
+          type="text"
+          label="MOD_SEMINARDESK_FIELD_TERM_LABEL"
+          description="MOD_SEMINARDESK_FIELD_TERM_DESC"
           showon="view:events"
         />
         <field

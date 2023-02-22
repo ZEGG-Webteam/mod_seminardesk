@@ -33,7 +33,7 @@ $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT,
 $filters = [
   'labels' => $params->get('labels'),
   'limit' => $params->get('limit'),
-  'term' => $app->input->get('q')?:$app->input->get('term')?:'',
+  'term' => $app->input->get('q')?:$app->input->get('term')?:($params->get('term')?:''),
 ];
 $eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('events_page'));
 $anyEventMatching = false;
