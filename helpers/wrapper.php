@@ -52,7 +52,7 @@ class ModSeminardeskWrapper
   
   /**
    * 
-   * @param array $filters - containing keys 'date', 'cat', 'org' and/or 'term'
+   * @param array $filters - containing keys 'date', 'cat', 'org', 'term'and/or 'show_canceled'
    * @param integer $events_page - page listing all events and base for event detail pages
    * @return array - list of event dates, filtered by
    */

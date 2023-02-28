@@ -74,6 +74,13 @@
           showon="view:events"
         />
         <field
+          name="show_canceled"
+          type="checkbox"
+          label="MOD_SEMINARDESK_FIELD_SHOW_CANCELED_LABEL"
+          description="MOD_SEMINARDESK_FIELD_SHOW_CANCELED_DESC"
+          showon="view:events"
+        />
+        <field
           name="direct_booking"
           type="radio"
           label="MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_LABEL"
