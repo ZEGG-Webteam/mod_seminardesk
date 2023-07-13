@@ -62,31 +62,8 @@ class ModSeminardeskWrapper
     //-- Map detailsUrl to $events_page from module configuration
     foreach ($eventDates as $key => &$eventDate) {
       $eventDate->detailsUrl = self::getEventUrl($eventDate, $events_page);
-    }    
+    }
     return $eventDates;
   }
   
-//  public static function showEvents() {
-//    $app 	= JFactory::getApplication();
-////		$ctrl 		= JControllerLegacy::getInstance('SeminardeskModelEvents');
-////    JLoader::register('SeminardeskModelEvents', JPATH_ROOT . '/components/com_seminardesk/models/events.php');
-////    $ctrl = new SeminardeskModelEvents();
-//    JLoader::register('SeminardeskController', JPATH_ROOT . '/components/com_seminardesk/controller.php');
-//    $ctrl = new SeminardeskController();
-////		$model 	= JModelLegacy::getInstance('Myview', 'SeminardeskModelEvents', array('ignore_request' => true));
-//    JLoader::register('SeminardeskViewEvents', JPATH_ROOT . '/components/com_seminardesk/views/events/view.html.php');
-//    $view = new SeminardeskViewEvents();
-//
-//    $document = JFactory::getDocument();
-//		$vFormat = $document->getType();/*html*/
-//
-////		$view = $ctrl->getView('SeminardeskViewEvents', $vFormat);
-//		
-//		// Push the model into the view (as default).
-//		$view->setModel($model, true);
-//		$view->setLayout("html");
-//		$view->document = $document;
-//		$view->display();
-////    die(json_encode($view));
-//  }
 }
