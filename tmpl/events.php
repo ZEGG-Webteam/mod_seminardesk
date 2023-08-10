@@ -90,7 +90,9 @@ $previous_event_month = '';
             <?= $eventDate->facilitatorsList; ?>
           </div>
           <div class="sd-event-registration">
-            <?= $eventDate->statusLabel; ?>
+            <?php if ($eventDate->endDate > time()) : ?>
+              <?= $eventDate->statusLabel; ?> <!-- show status for future events only -->
+            <?php endif; ?>
           </div>
           <div class="sd-event-external">
             <?= ($eventDate->isExternal)?JText::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL"):''; ?>
