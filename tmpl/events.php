@@ -32,6 +32,7 @@ $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT,
 //-- Load filtered events
 $filters = [
   'labels' => $params->get('labels'),
+  'label_exceptions' => $params->get('label_exceptions'),
   'limit' => $params->get('limit'),
   'term' => $app->input->get('q', '', 'string')?:$app->input->get('term', '', 'string')?:($params->get('term')?:''),
   'show_canceled' => $params->get('show_canceled', false),
