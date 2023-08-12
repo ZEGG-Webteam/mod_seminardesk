@@ -15,8 +15,9 @@ JHTML::_('behavior.modal');
 
 //-- Load configs
 $show_months = $params->get('show_months');
-$text_before = $params->get('text_before');
-$text_after = $params->get('text_after');
+//$text_before = $params->get('text_before');
+//$text_after = $params->get('text_after');
+$display_teaser_image = $params->get('display_teaser_image');
 $direct_booking = $params->get('direct_booking');
 
 //-- Load CSS / JS
@@ -61,6 +62,13 @@ $previous_event_month = '';
           $previous_event_month = $current_month;
         }
       }
+      
+      //-- Teaser image?
+      $teaserImg = ($display_teaser_image && $eventDate->teaserPictureUrl)?$eventDate->teaserPictureUrl:'';
+      if ($teaserImg) {
+        $eventDate->cssClasses .= ' show-teaser-image';
+      }
+      
       //-- Link to details or booking?
       $link = ($direct_booking)?$eventDate->bookingUrl:$eventDate->detailsUrl;
       $classSuffix = ($direct_booking)?" modal":"";
@@ -73,38 +81,42 @@ $previous_event_month = '';
       <div class="sd-event<?= (!$matchingFilters)?' hidden':'' ?>" 
            itemscope="itemscope" itemtype="https://schema.org/Event"
            data-categories='<?= $eventDate->categoriesList ?>'>
-        <a class="<?= $eventDate->cssClasses . $classSuffix ?>" href="<?= $link ?>" itemprop="url" <?= ($direct_booking)?'rel="{handler: \'iframe\'}"':''; ?>>
-          <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
-          <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
-            <time itemprop="startDate" 
-                  datetime="<?= date('c', $eventDate->beginDate) ?>" 
-                  content="<?= date('c', $eventDate->beginDate) ?>">
-              <?= $eventDate->dateFormatted; ?>
-            </time>
-            <time itemprop="endDate" datetime="<?= date('c', $eventDate->endDate) ?>"></time>
-          </div>
-          <div class="sd-event-title" itemprop="name">
-            <h4><?= $eventDate->title; ?></h4>
-            <?= ($eventDate->showDateTitle)?('<p>' . $eventDate->eventDateTitle . '</p>'):'' ?>
-          </div>
-          <div class="sd-event-facilitators" itemprop="organizer">
-            <?= $eventDate->facilitatorsList; ?>
-          </div>
-          <div class="sd-event-registration">
-            <?php if ($eventDate->endDate > time()) : ?>
-              <?= $eventDate->statusLabel; ?> <!-- show status for future events only -->
-            <?php endif; ?>
-          </div>
-          <div class="sd-event-external">
-            <?= ($eventDate->isExternal)?JText::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL"):''; ?>
-          </div>
-          <div class="sd-event-location hidden" itemprop="location" itemscope itemtype="https://schema.org/Place">
-            <span itemprop="name">ZEGG Bildungszentrum gGmbH</span>
-            <div class="address" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-              <span itemprop="streetAddress">Rosa-Luxemburg-Strasse 89</span><br>
-              <span itemprop="postalCode">14806</span> <span itemprop="addressLocality">Bad Belzig</span>, <span itemprop="addressCountry">DE</span>
+        <a class="<?= $eventDate->cssClasses . $classSuffix ?> no-icon" href="<?= $link ?>" itemprop="url"<?= ($eventDate->isFeatured)?' target="_blank"':''; ?><?= ($direct_booking)?' rel="{handler: \'iframe\'}"':''; ?>>
+          <?php if ($teaserImg) : ?>
+            <img src="<?= $eventDate->teaserPictureUrl ?>" title="<?= strip_tags($eventDate->dateFormatted) . ': ' .  $eventDate->title; ?>" alt="<?= $eventDate->title; ?>" width="700">
+          <?php else : ?>
+            <?php $sameYear = date('Y', $eventDate->beginDate) === date('Y', $eventDate->endDate); ?>
+            <div class="sd-event-date <?= (!$sameYear)?' not-same-year':'' ?>">
+              <time itemprop="startDate" 
+                    datetime="<?= date('c', $eventDate->beginDate) ?>" 
+                    content="<?= date('c', $eventDate->beginDate) ?>">
+                <?= $eventDate->dateFormatted; ?>
+              </time>
+              <time itemprop="endDate" datetime="<?= date('c', $eventDate->endDate) ?>"></time>
             </div>
-          </div>
+            <div class="sd-event-title" itemprop="name">
+              <h4><?= $eventDate->title; ?></h4>
+              <?= ($eventDate->showDateTitle)?('<p>' . $eventDate->eventDateTitle . '</p>'):'' ?>
+            </div>
+            <div class="sd-event-facilitators" itemprop="organizer">
+              <?= $eventDate->facilitatorsList; ?>
+            </div>
+            <div class="sd-event-registration">
+              <?php if ($eventDate->endDate > time()) : ?>
+                <?= $eventDate->statusLabel; ?> <!-- show status for future events only -->
+              <?php endif; ?>
+            </div>
+            <div class="sd-event-external">
+              <?= ($eventDate->isExternal)?JText::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL"):''; ?>
+            </div>
+            <div class="sd-event-location hidden" itemprop="location" itemscope itemtype="https://schema.org/Place">
+              <span itemprop="name">ZEGG Bildungszentrum gGmbH</span>
+              <div class="address" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                <span itemprop="streetAddress">Rosa-Luxemburg-Strasse 89</span><br>
+                <span itemprop="postalCode">14806</span> <span itemprop="addressLocality">Bad Belzig</span>, <span itemprop="addressCountry">DE</span>
+              </div>
+            </div>
+          <?php endif; ?>
         </a>
       </div>
     <?php endforeach; ?>
