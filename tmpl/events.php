@@ -37,6 +37,7 @@ $filters = [
   'limit' => $params->get('limit'),
   'term' => $app->input->get('q', '', 'string')?:$app->input->get('term', '', 'string')?:($params->get('term')?:''),
   'show_canceled' => $params->get('show_canceled', false),
+  'hide_ongoing' => $params->get('hide_ongoing', false),
 ];
 $eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('events_page'));
 $anyEventMatching = false;

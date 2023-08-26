@@ -88,6 +88,14 @@
           showon="view:events"
         />
         <field
+          name="hide_ongoing"
+          type="checkbox"
+          label="MOD_SEMINARDESK_FIELD_HIDE_ONGOING_LABEL"
+          description="MOD_SEMINARDESK_FIELD_HIDE_ONGOING_DESC"
+          default="1"
+          showon="view:events"
+        />
+        <field
           name="display_teaser_image"
           type="checkbox"
           label="MOD_SEMINARDESK_FIELD_DISPLAY_TEASER_IMAGE_LABEL"
