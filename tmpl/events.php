@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('jquery.framework');
-JHTML::_('behavior.modal');
+//JHTML::_('behavior.modal');
 
 //-- Load configs
 $show_months = $params->get('show_months');
@@ -28,7 +28,7 @@ if ($direct_booking) {
   $document->addStyleSheet('/media/com_seminardesk/css/styles.css');
 }
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_COMPAT, 'UTF-8');
 
 //-- Load filtered events
 $filters = [
@@ -43,11 +43,6 @@ $eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('even
 $anyEventMatching = false;
 $previous_event_month = '';
 ?>
-<?php if ($text_before) : ?>
-<div class="sd-events-text-before">
-  <?= $text_before; ?>
-</div>
-<?php endif; ?>
 <div class="sd-module sd-events<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
   <?php if ($eventDates) : ?>
     <?php foreach($eventDates as $eventDate) : ?>
@@ -124,8 +119,3 @@ $previous_event_month = '';
   <?php endif; ?>
   <p class="no-events-found<?= ($eventDates && $anyEventMatching)?' hidden':''; ?>"><?php echo JText::_("MOD_SEMINARDESK_NO_EVENTS_FOUND");?></p>
 </div>
-<?php if ($text_after) : ?>
-<div class="sd-events-text-after">
-  <?= $text_after; ?>
-</div>
-<?php endif; ?>
