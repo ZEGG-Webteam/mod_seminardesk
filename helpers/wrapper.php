@@ -57,9 +57,13 @@ class ModSeminardeskWrapper
    * @return array - list of event dates, filtered by
    */
   public static function loadEventDates($filters = [], $events_page = 0) {
-    JLoader::register('SeminardeskHelperData', JPATH_ROOT . '/components/com_seminardesk/helpers/data.php');
-    $eventDates = SeminardeskHelperData::loadEventDates($filters, $events_page);
-    //-- Map detailsUrl to $events_page from module configuration
+    JLoader::register('SeminardeskApiController', JPATH_ROOT . '/components/com_seminardesk/controllers/api.php');
+    JLoader::register('SeminardeskDataHelper', JPATH_ROOT . '/components/com_seminardesk/helpers/data.php');
+    
+    // Load event dates from API or cache
+    $eventDates = SeminardeskDataHelper::loadEventDates($filters);
+    
+    // Map detailsUrl to $events_page from module configuration
     foreach ($eventDates as $key => &$eventDate) {
       $eventDate->detailsUrl = self::getEventUrl($eventDate, $events_page);
     }
