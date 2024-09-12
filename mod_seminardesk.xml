@@ -103,6 +103,13 @@
           showon="view:events"
         />
         <field
+          name="link_to_event_website"
+          type="checkbox"
+          label="MOD_SEMINARDESK_FIELD_LINK_TO_EVENT_WEBSITE_LABEL"
+          description="MOD_SEMINARDESK_FIELD_LINK_TO_EVENT_WEBSITE_DESC"
+          showon="view:events"
+        />
+        <field
           name="direct_booking"
           type="radio"
           label="MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_LABEL"

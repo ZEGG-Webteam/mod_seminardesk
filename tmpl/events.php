@@ -18,6 +18,7 @@ $show_months = $params->get('show_months');
 //$text_before = $params->get('text_before');
 //$text_after = $params->get('text_after');
 $display_teaser_image = $params->get('display_teaser_image');
+$link_to_event_website = $params->get('link_to_event_website');
 $direct_booking = $params->get('direct_booking');
 
 //-- Load CSS / JS
@@ -65,8 +66,14 @@ $previous_event_month = '';
         $eventDate->cssClasses .= ' show-teaser-image';
       }
       
-      //-- Link to details or booking?
-      $link = ($direct_booking)?$eventDate->bookingUrl:$eventDate->detailsUrl;
+      //-- Link to event website, details or booking?
+      if ($link_to_event_website && $eventDate->website) {
+        $link = $eventDate->website;
+      } else if ($direct_booking) {
+        $link = $eventDate->bookingUrl;
+      } else {
+        $link = $eventDate->detailsUrl;
+      }
       $classSuffix = ($direct_booking)?" modal":"";
       
       //-- Matching search term filter?
@@ -77,7 +84,13 @@ $previous_event_month = '';
       <div class="sd-event<?= (!$matchingFilters)?' hidden':'' ?>" 
            itemscope="itemscope" itemtype="https://schema.org/Event"
            data-categories='<?= $eventDate->categoriesList ?>'>
-        <a class="<?= $eventDate->cssClasses . $classSuffix ?> no-icon" href="<?= $link ?>" itemprop="url"<?= ($eventDate->isFeatured)?' target="_blank"':''; ?><?= ($direct_booking)?' rel="{handler: \'iframe\'}"':''; ?>>
+        <a 
+          class="<?= $eventDate->cssClasses . $classSuffix ?> no-icon" 
+          href="<?= $link ?>" 
+          itemprop="url"
+          target="<?= ($eventDate->isFeatured || ($link_to_event_website && $this->eventDate->website))?'_blank':'_parent'; ?>"
+          <?= ($direct_booking)?' rel="{handler: \'iframe\'}"':''; ?>
+        >
           <?php if ($teaserImg) : ?>
             <img src="<?= $eventDate->teaserPictureUrl ?>" title="<?= strip_tags($eventDate->dateFormatted) . ': ' .  $eventDate->title; ?>" alt="<?= $eventDate->title; ?>" width="700">
           <?php else : ?>
