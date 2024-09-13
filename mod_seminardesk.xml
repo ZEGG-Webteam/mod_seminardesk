@@ -103,22 +103,16 @@
           showon="view:events"
         />
         <field
-          name="link_to_event_website"
-          type="checkbox"
-          label="MOD_SEMINARDESK_FIELD_LINK_TO_EVENT_WEBSITE_LABEL"
-          description="MOD_SEMINARDESK_FIELD_LINK_TO_EVENT_WEBSITE_DESC"
-          showon="view:events"
-        />
-        <field
-          name="direct_booking"
+          name="event_link_action"
           type="radio"
-          label="MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_LABEL"
-          description="MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_DESC"
+          label="MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_LABEL"
+          description="MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_DESC"
           default="0"
           showon="view:events"
         >
-          <option value="0">MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_OPTION_DETAIL</option>
-          <option value="1">MOD_SEMINARDESK_FIELD_DIRECT_BOOKING_OPTION_BOOKING</option>
+          <option value="0">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_DETAIL</option>
+          <option value="1">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_URL</option>
+          <option value="2">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_BOOKING</option>
         </field>
         <field
           name="facilitators_page"

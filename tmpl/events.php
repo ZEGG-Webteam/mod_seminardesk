@@ -18,14 +18,14 @@ $show_months = $params->get('show_months');
 //$text_before = $params->get('text_before');
 //$text_after = $params->get('text_after');
 $display_teaser_image = $params->get('display_teaser_image');
-$link_to_event_website = $params->get('link_to_event_website');
-$direct_booking = $params->get('direct_booking');
+// event_link_action: 0 = detail page, 1 = URL to special event website, 2 = direct booking
+$event_link_action = $params->get('event_link_action');
 
 //-- Load CSS / JS
 $document  = JFactory::getDocument();
 $document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
 $document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
-if ($direct_booking) {
+if ($event_link_action == '1') {
   $document->addStyleSheet('/media/com_seminardesk/css/styles.css');
 }
 
@@ -67,14 +67,14 @@ $previous_event_month = '';
       }
       
       //-- Link to event website, details or booking?
-      if ($link_to_event_website && $eventDate->website) {
+      if ($event_link_action == '1' && $eventDate->website) {
         $link = $eventDate->website;
-      } else if ($direct_booking) {
+      } else if ($event_link_action == '2') {
         $link = $eventDate->bookingUrl;
       } else {
         $link = $eventDate->detailsUrl;
       }
-      $classSuffix = ($direct_booking)?" modal":"";
+      $classSuffix = ($event_link_action == '2')?" modal":"";
       
       //-- Matching search term filter?
 //      $matchingFilters = SeminardeskHelperData::matchingFilters($eventDate, $filters);
@@ -89,7 +89,7 @@ $previous_event_month = '';
           href="<?= $link ?>" 
           itemprop="url"
           target="<?= ($eventDate->isFeatured || ($link_to_event_website && $this->eventDate->website))?'_blank':'_parent'; ?>"
-          <?= ($direct_booking)?' rel="{handler: \'iframe\'}"':''; ?>
+          <?= ($event_link_action == '2')?' rel="{handler: \'iframe\'}"':''; ?>
         >
           <?php if ($teaserImg) : ?>
             <img src="<?= $eventDate->teaserPictureUrl ?>" title="<?= strip_tags($eventDate->dateFormatted) . ': ' .  $eventDate->title; ?>" alt="<?= $eventDate->title; ?>" width="700">
