@@ -111,7 +111,7 @@
           showon="view:events"
         >
           <option value="0">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_DETAIL</option>
-          <option value="1">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_URL</option>
+          <option value="1">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_WEBSITE</option>
           <option value="2">MOD_SEMINARDESK_FIELD_EVENT_LINK_ACTION_OPTION_BOOKING</option>
         </field>
         <field
