@@ -67,6 +67,19 @@
           showon="view:events"
         />
         <field
+          name="lang"
+          type="list"
+          label="MOD_SEMINARDESK_FIELD_LANG_LABEL"
+          description="MOD_SEMINARDESK_FIELD_LANG_DESC"
+          default="module"
+          showon="view:events"
+        >
+          <option value="module">MOD_SEMINARDESK_FIELD_LANG_OPTION_MODULE</option>
+          <option value="all">MOD_SEMINARDESK_FIELD_LANG_OPTION_ALL</option>
+          <option value="de">MOD_SEMINARDESK_FIELD_LANG_OPTION_DE</option>
+          <option value="en">MOD_SEMINARDESK_FIELD_LANG_OPTION_EN</option>
+        </field>
+        <field
           name="limit"
           type="number"
           label="MOD_SEMINARDESK_FIELD_LIMIT_LABEL"

@@ -32,6 +32,15 @@ if ($event_link_action == '1') {
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_COMPAT, 'UTF-8');
 
 //-- Load filtered events
+// Determine language filter: 'module' = use Joomla frontend language, 'all' = no filter, or specific lang code
+$langConfig = $params->get('lang', 'module');
+if ($langConfig === 'module') {
+  $langFilter = strtolower(substr(JFactory::getLanguage()->getTag(), 0, 2));
+} elseif ($langConfig === 'all') {
+  $langFilter = '';
+} else {
+  $langFilter = $langConfig;
+}
 $filters = [
   'labels' => $params->get('labels'),
   'label_exceptions' => $params->get('label_exceptions'),
@@ -39,6 +48,7 @@ $filters = [
   'term' => $app->input->get('q', '', 'string')?:$app->input->get('term', '', 'string')?:($params->get('term')?:''),
   'show_canceled' => $params->get('show_canceled', false),
   'hide_ongoing' => $params->get('hide_ongoing', false),
+  'lang' => $langFilter,
 ];
 $eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('events_page'));
 $anyEventMatching = false;
