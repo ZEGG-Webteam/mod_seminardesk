@@ -10,36 +10,28 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
-JHTML::_('behavior.modal');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
-//-- Load CSS / JS
-$document  = JFactory::getDocument();
-$document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
-$document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('mod_seminardesk.styles', 'modules/mod_seminardesk/assets/css/styles.css');
+$wa->registerAndUseScript('mod_seminardesk.scripts', 'modules/mod_seminardesk/assets/js/scripts.js', [], ['defer' => true]);
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx') ?? '', ENT_COMPAT, 'UTF-8');
 
-////-- Load filtered events
-//$filter = [
-//  'labels' => $params->get('labels'),
-//  'limit' => $params->get('limit'),
-//];
-//$events = ModSeminardeskWrapper::loadEventDates($filter);
-//
-//$show_months = $params->get('show_months');
-//$previous_event_month = '';
+// $facilitators is now passed from Dispatcher via getLayoutData()
 ?>
 
-<div class="sd-module sd-facilitators<?php echo ($moduleclass_sfx)?' sd-events'.$moduleclass_sfx:''; ?>">
+<div class="sd-module sd-facilitators<?php echo ($moduleclass_sfx) ? ' sd-events' . $moduleclass_sfx : ''; ?>">
   <p>To do: Display Facilitators...</p>
-  <?php if ($facilitators) : ?>
+  <?php if (!empty($facilitators)) : ?>
     <?php foreach($facilitators as $facilitator) : ?>
       <div class="sd-facilitator">
          
       </div>
     <?php endforeach; ?>
   <?php else : ?>
-    <p><?php echo JText::_("MOD_SEMINARDESK_NO_FACILITATORS_FOUND");?></p>
+    <p><?php echo Text::_("MOD_SEMINARDESK_NO_FACILITATORS_FOUND"); ?></p>
   <?php endif; ?>
 </div>

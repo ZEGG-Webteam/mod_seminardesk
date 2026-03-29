@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.0" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
   <name>MOD_SEMINARDESK</name>
   <author>Benno Flory</author>
   <authorUrl>https://github.com/sternenvogel</authorUrl>
-  <creationDate>Januar 2023</creationDate>
-  <copyright>Copyright (C) 2023 Open Source Matters. All rights reserved.</copyright>
+  <creationDate>March 2026</creationDate>
+  <copyright>Copyright (C) 2023-2026 Open Source Matters. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
   <description>MOD_SEMINARDESK_DESCRIPTION</description>
+  <dependencies>
+    <dependency type="component" name="com_seminardesk">com_seminardesk</dependency>
+  </dependencies>
+  <namespace path="src">Joomla\Module\Seminardesk</namespace>
   <files>
-    <filename module="mod_seminardesk">mod_seminardesk.php</filename>
     <folder>assets</folder>
-    <folder>helpers</folder>
+    <folder module="mod_seminardesk">services</folder>
+    <folder>src</folder>
     <folder>tmpl</folder>
+    <folder>language</folder>
   </files>
-  <languages>
-    <language tag="en-GB">language/en-GB/en-GB.mod_seminardesk.ini</language>
-    <language tag="en-GB">language/en-GB/en-GB.mod_seminardesk.sys.ini</language>
-    <language tag="de-DE">language/de-DE/de-DE.mod_seminardesk.ini</language>
-    <language tag="de-DE">language/de-DE/de-DE.mod_seminardesk.sys.ini</language>
+  <languages folder="language">
+    <language tag="en-GB">en-GB/en-GB.mod_seminardesk.ini</language>
+    <language tag="en-GB">en-GB/en-GB.mod_seminardesk.sys.ini</language>
+    <language tag="de-DE">de-DE/de-DE.mod_seminardesk.ini</language>
+    <language tag="de-DE">de-DE/de-DE.mod_seminardesk.sys.ini</language>
   </languages>
-  <media destination="com_seminardesk" folder="media">
+  <media destination="mod_seminardesk" folder="assets">
     <folder>js</folder>
     <folder>css</folder>
   </media>
@@ -33,6 +38,7 @@
           type="list"
           label="MOD_SEMINARDESK_FIELD_VIEW_LABEL"
           description="MOD_SEMINARDESK_FIELD_VIEW_DESC"
+          default="events"
         >
           <option value="events">MOD_SEMINARDESK_FIELD_VIEW_EVENTS</option>
           <option value="facilitators">MOD_SEMINARDESK_FIELD_VIEW_FACILITATORS</option>

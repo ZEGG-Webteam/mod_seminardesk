@@ -10,7 +10,7 @@
 
 defined('_JEXEC') or die;
 
-// Include the seminardesk events functions only once
-JLoader::register('ModSeminardeskWrapper', __DIR__ . '/helpers/wrapper.php');
+// Get the configured view and include the corresponding template
+$view = $params->get('view', 'events');
 
-require JModuleHelper::getLayoutPath('mod_seminardesk', $params->get('layout', 'events'));
+require __DIR__ . '/' . $view . '.php';

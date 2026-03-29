@@ -10,27 +10,16 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
-//JHTML::_('behavior.modal');
+use Joomla\CMS\Factory;
 
-//-- Load CSS / JS
-$document  = JFactory::getDocument();
-$document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
-$document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('mod_seminardesk.styles', 'modules/mod_seminardesk/assets/css/styles.css');
+$wa->registerAndUseScript('mod_seminardesk.scripts', 'modules/mod_seminardesk/assets/js/scripts.js', [], ['defer' => true]);
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
-
-////-- Load filtered events
-//$filter = [
-//  'labels' => $params->get('labels'),
-//  'limit' => $params->get('limit'),
-//];
-//$events = ModSeminardeskWrapper::loadEventDates($filter);
-//
-//$show_months = $params->get('show_months');
-//$previous_event_month = '';
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx') ?? '', ENT_COMPAT, 'UTF-8');
 ?>
 
-<div class="sd-module sd-filters<?php echo ($moduleclass_sfx)?>">
+<div class="sd-module sd-filters<?php echo $moduleclass_sfx; ?>">
   <p>To do: Display search form...</p>
 </div>

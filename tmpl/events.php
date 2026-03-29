@@ -10,47 +10,28 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
-//JHTML::_('behavior.modal');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('mod_seminardesk.styles', 'modules/mod_seminardesk/assets/css/styles.css');
+$wa->registerAndUseScript('mod_seminardesk.scripts', 'modules/mod_seminardesk/assets/js/scripts.js', [], ['defer' => true]);
 
 //-- Load configs
 $show_months = $params->get('show_months');
-//$text_before = $params->get('text_before');
-//$text_after = $params->get('text_after');
 $display_teaser_image = $params->get('display_teaser_image');
 // event_link_action: 0 = detail page, 1 = URL to special event website, 2 = direct booking
 $event_link_action = $params->get('event_link_action');
 
-//-- Load CSS / JS
-$document  = JFactory::getDocument();
-$document->addStyleSheet('/modules/mod_seminardesk/assets/css/styles.css');
-$document->addScript('/modules/mod_seminardesk/assets/js/scripts.js');
 if ($event_link_action == '1') {
-  $document->addStyleSheet('/media/com_seminardesk/css/styles.css');
+  $wa->registerAndUseStyle('com_seminardesk.styles', 'media/com_seminardesk/css/styles.css');
 }
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_COMPAT, 'UTF-8');
 
-//-- Load filtered events
-// Determine language filter: 'module' = use Joomla frontend language, 'all' = no filter, or specific lang code
-$langConfig = $params->get('lang', 'module');
-if ($langConfig === 'module') {
-  $langFilter = strtolower(substr(JFactory::getLanguage()->getTag(), 0, 2));
-} elseif ($langConfig === 'all') {
-  $langFilter = '';
-} else {
-  $langFilter = $langConfig;
-}
-$filters = [
-  'labels' => $params->get('labels'),
-  'label_exceptions' => $params->get('label_exceptions'),
-  'limit' => $params->get('limit'),
-  'term' => $app->input->get('q', '', 'string')?:$app->input->get('term', '', 'string')?:($params->get('term')?:''),
-  'show_canceled' => $params->get('show_canceled', false),
-  'hide_ongoing' => $params->get('hide_ongoing', false),
-  'lang' => $langFilter,
-];
-$eventDates = ModSeminardeskWrapper::loadEventDates($filters, $params->get('events_page'));
+// $eventDates is now passed from Dispatcher via getLayoutData()
 $anyEventMatching = false;
 $previous_event_month = '';
 ?>
@@ -63,7 +44,7 @@ $previous_event_month = '';
         $current_month = (int)date('m', $eventDate->beginDate);
         if ($current_month !== $previous_event_month) { ?>
           <div class="sd-month-row">
-            <h3><?= JText::sprintf( JHTML::_('date', $eventDate->beginDate, 'F Y')) ?></h3>
+            <h3><?= Text::sprintf(HTMLHelper::_('date', $eventDate->beginDate, 'F Y')) ?></h3>
           </div>
           <?php
           $previous_event_month = $current_month;
@@ -126,7 +107,7 @@ $previous_event_month = '';
               <?php endif; ?>
             </div>
             <div class="sd-event-external">
-              <?= ($eventDate->isExternal)?JText::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL"):''; ?>
+              <?= ($eventDate->isExternal) ? Text::_("COM_SEMINARDESK_EVENTS_LABEL_EXTERNAL") : ''; ?>
             </div>
             <div class="sd-event-location hidden" itemprop="location" itemscope itemtype="https://schema.org/Place">
               <span itemprop="name">ZEGG Bildungszentrum gGmbH</span>
@@ -140,5 +121,5 @@ $previous_event_month = '';
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
-  <p class="no-events-found<?= ($eventDates && $anyEventMatching)?' hidden':''; ?>"><?php echo JText::_("MOD_SEMINARDESK_NO_EVENTS_FOUND");?></p>
+  <p class="no-events-found<?= ($eventDates && $anyEventMatching) ? ' hidden' : ''; ?>"><?php echo Text::_("MOD_SEMINARDESK_NO_EVENTS_FOUND"); ?></p>
 </div>
