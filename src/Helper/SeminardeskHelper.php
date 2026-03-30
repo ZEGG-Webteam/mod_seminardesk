@@ -14,7 +14,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Seminardesk\Site\Helper\DataHelper;
+use Joomla\Component\Seminardesk\Site\Service\ServiceFactory;
 use Joomla\Registry\Registry;
 
 /**
@@ -96,8 +96,8 @@ class SeminardeskHelper
 
         $eventsPage = (int) $params->get('events_page', 0);
 
-        // Load event dates from component's DataHelper
-        $eventDates = DataHelper::loadEventDates($filters);
+        // Load event dates from component's EventDateService
+        $eventDates = ServiceFactory::getEventDateService()->loadEventDates($filters);
         
         // Map detailsUrl to events_page from module configuration
         foreach ($eventDates as &$eventDate) {
